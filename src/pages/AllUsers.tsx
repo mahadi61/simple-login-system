@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -30,6 +31,8 @@ const AllUsers = () => {
       });
   }, []);
 
+  const handleDelete = (id: string) => {};
+
   if (loading) return <p>Loading users...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
 
@@ -37,7 +40,7 @@ const AllUsers = () => {
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">All Users</h2>
       <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <table className="min-w-full bg-white shadow-md overflow-hidden">
           <thead className="bg-gray-200">
             <tr className="text-left">
               <th className="py-2 px-4 border">#</th>
@@ -46,6 +49,7 @@ const AllUsers = () => {
               <th className="py-2 px-4 border">Phone</th>
               <th className="py-2 px-4 border">Gender</th>
               <th className="py-2 px-4 border">Date of Birth</th>
+              <th className="py-2 px-4 border">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -56,7 +60,17 @@ const AllUsers = () => {
                 <td className="py-2 px-4 border">{user.email}</td>
                 <td className="py-2 px-4 border">{user.phone}</td>
                 <td className="py-2 px-4 border">{user.gender}</td>
-                <td className="py-2 px-4 border">{user.dateOfBirth}</td>
+                <td className="py-2 px-4 border">
+                  {moment(user.dateOfBirth).format("Do MMM, YYYY")}
+                </td>
+                <td className="py-2 px-4 border">
+                  <button
+                    onClick={() => handleDelete(user._id)}
+                    className="px-3 py-1 bg-red-600 text-white rounded-md hover:bg-red-700 transition"
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
