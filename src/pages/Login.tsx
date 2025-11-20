@@ -1,26 +1,75 @@
+import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
+interface LoginForm {
+  email: string;
+  password: string;
+}
+
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginForm>();
+
+  const onSubmit = (data: LoginForm) => {
+    fetch("http://localhost:5000/user/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          // If backend returns error status (400, 500 etc)
+          return res.json().then((err) => {
+            throw new Error(err.message || "Something went wrong");
+          });
+        }
+        return res.json();
+      })
+      .then((result) => {
+        console.log("Login success:", result);
+        alert("Login successful!");
+        // TODO: Save token or redirect user if needed
+      })
+      .catch((error) => {
+        console.error("Login error:", error.message);
+        alert("Error: " + error.message);
+      });
+  };
+
   return (
     <div className="flex h-screen">
-      {/*  Login Form */}
+      {/* Login Form */}
       <div className="w-1/2 flex flex-col justify-center items-center p-10">
         <h2 className="text-3xl font-bold mb-8">Login</h2>
 
-        <form className="w-80">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-80">
+          {/* Email */}
           <input
-            name="email"
             type="email"
             placeholder="Email"
-            className="w-full mb-4 p-3 border rounded-md"
+            className="w-full mb-1 p-3 border rounded-md"
+            {...register("email", {
+              required: "Email is required",
+              pattern: { value: /\S+@\S+\.\S+/, message: "Invalid email" },
+            })}
           />
+          {errors.email && (
+            <p className="text-red-500 mb-3">{errors.email.message}</p>
+          )}
 
+          {/* Password */}
           <input
-            name="password"
             type="password"
             placeholder="Password"
-            className="w-full mb-4 p-3 border rounded-md"
+            className="w-full mb-1 p-3 border rounded-md"
+            {...register("password", { required: "Password is required" })}
           />
+          {errors.password && (
+            <p className="text-red-500 mb-3">{errors.password.message}</p>
+          )}
 
           <button
             type="submit"
@@ -29,10 +78,11 @@ const Login = () => {
             Login
           </button>
         </form>
-        <p>
+
+        <p className="mt-3">
           New user?{" "}
-          <Link to={"/registration"} className="hover:underline text-blue-500">
-            Sing Up Now
+          <Link to="/registration" className="text-blue-500 hover:underline">
+            Sign Up Now
           </Link>
         </p>
       </div>
