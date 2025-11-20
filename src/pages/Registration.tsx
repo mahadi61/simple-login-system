@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 // interface for form data
 interface RegistrationForm {
@@ -13,6 +13,7 @@ interface RegistrationForm {
 }
 
 const Registration = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -49,6 +50,7 @@ const Registration = () => {
       .then((result) => {
         console.log("Success:", result);
         alert("Registration successful!");
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error:", error.message);

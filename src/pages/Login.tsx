@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 interface LoginForm {
   email: string;
@@ -7,6 +7,7 @@ interface LoginForm {
 }
 
 const Login = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,7 +33,7 @@ const Login = () => {
         console.log("Login success:", result);
         alert("Login successful!");
 
-        // TODO: Save token or redirect user if needed
+        navigate("/dashboard");
       })
       .catch((error) => {
         console.error("Login error:", error.message);
