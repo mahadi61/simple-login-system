@@ -20,10 +20,41 @@ const Registration = () => {
     formState: { errors },
   } = useForm<RegistrationForm>();
 
-  const onSubmit = (data: RegistrationForm) => {
-    console.log("Form Data:", data);
-  };
+  const onSubmit = async (data: RegistrationForm) => {
+    // Remove confirmPassword before sending to backend
+    const payload = {
+      name: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      dateOfBirth: data.dob,
+      gender: data.gender,
+      password: data.password,
+    };
 
+    // send data to backend
+    fetch("http://localhost:5000/user/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          // If backend returns error status (400, 500 etc)
+          return res.json().then((err) => {
+            throw new Error(err.message || "Something went wrong");
+          });
+        }
+        return res.json();
+      })
+      .then((result) => {
+        console.log("Success:", result);
+        alert("Registration successful!");
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+        alert("Error: " + error.message);
+      });
+  };
   return (
     <div className="flex h-screen">
       {/* Left Form */}
