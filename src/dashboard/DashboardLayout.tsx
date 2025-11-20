@@ -9,9 +9,7 @@ const DashboardLayout = () => {
       <Navbar />
       <div className="flex h-screen">
         {/* Left Sidebar */}
-        <div className="w-1/4 bg-gray-500 text-white p-5 flex flex-col">
-          <h2 className="text-2xl text-center font-bold mb-6">Dashboard</h2>
-
+        <div className="w-1/4 bg-gray-300 text-white p-5 flex flex-col">
           {/* Sidebar Buttons */}
           <Link
             to="/dashboard"

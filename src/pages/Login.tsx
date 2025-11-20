@@ -31,6 +31,7 @@ const Login = () => {
       .then((result) => {
         console.log("Login success:", result);
         alert("Login successful!");
+
         // TODO: Save token or redirect user if needed
       })
       .catch((error) => {
