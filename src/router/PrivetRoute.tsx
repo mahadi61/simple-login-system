@@ -9,6 +9,7 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
 
   if (!user) {
     // Not logged in and redirect to login page
+    alert("Please login to access this page.");
     return <Navigate to="/" replace />;
   }
 
