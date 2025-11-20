@@ -32,7 +32,8 @@ const Login = () => {
       .then((result) => {
         console.log("Login success:", result);
         alert("Login successful!");
-
+        // Save user in localStorage
+        localStorage.setItem("user", result.data);
         navigate("/dashboard");
       })
       .catch((error) => {
