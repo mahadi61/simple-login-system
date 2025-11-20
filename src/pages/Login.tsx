@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const Login = () => {
   return (
     <div className="flex h-screen">
@@ -27,6 +29,12 @@ const Login = () => {
             Login
           </button>
         </form>
+        <p>
+          New user?{" "}
+          <Link to={"/registration"} className="hover:underline text-blue-500">
+            Sing Up Now
+          </Link>
+        </p>
       </div>
 
       {/* Image */}
