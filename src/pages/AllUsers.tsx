@@ -14,6 +14,7 @@ const AllUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>("");
+  const [updateFlag, setUpdateFlag] = useState(false);
 
   useEffect(() => {
     fetch("http://localhost:5000/user/all-users")
@@ -29,9 +30,27 @@ const AllUsers = () => {
         setError(err.message);
         setLoading(false);
       });
-  }, []);
+  }, [updateFlag]);
 
-  const handleDelete = (id: string) => {};
+  const handleDelete = (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+    fetch(`http://localhost:5000/user/delete-user/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to delete user");
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setUpdateFlag(!updateFlag);
+        alert(data.message);
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Error deleting user: " + err.message);
+      });
+  };
 
   if (loading) return <p>Loading users...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
